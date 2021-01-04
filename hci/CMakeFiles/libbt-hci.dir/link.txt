@@ -1,0 +1,1 @@
+/usr/bin/cc -fPIC -g  -shared -Wl,-soname,libbt-hci.so -o libbt-hci.so CMakeFiles/libbt-hci.dir/src/bt_hci_bdroid.c.o CMakeFiles/libbt-hci.dir/src/lpm.c.o CMakeFiles/libbt-hci.dir/src/bt_hw.c.o CMakeFiles/libbt-hci.dir/src/btsnoop.c.o CMakeFiles/libbt-hci.dir/src/utils.c.o CMakeFiles/libbt-hci.dir/src/hci_h4.c.o CMakeFiles/libbt-hci.dir/src/userial.c.o  -lrt -ldl 

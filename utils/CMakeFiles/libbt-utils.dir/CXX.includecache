@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/nikhil/Documents/bluedroid.for.linux/utils/src/tinyxml2.cpp
+tinyxml2.h
+/home/nikhil/Documents/bluedroid.for.linux/utils/src/tinyxml2.h
+cstdio
+-
+cstdlib
+-
+new
+-
+cstddef
+-
+fcntl.h
+-
+
+utils/include/tinyxml2.h
+cctype
+-
+climits
+-
+cstdio
+-
+cstring
+-
+stdarg.h
+-
+android/log.h
+-
+assert.h
+-
+

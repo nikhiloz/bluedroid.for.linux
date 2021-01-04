@@ -1,0 +1,2 @@
+/usr/bin/ar qc libbt-utils.a  CMakeFiles/libbt-utils.dir/src/bt_utils.c.o CMakeFiles/libbt-utils.dir/src/tinyxml2.cpp.o
+/usr/bin/ranlib libbt-utils.a

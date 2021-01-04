@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/nikhil/Documents/bluedroid.for.linux/utils/src/bt_utils.c
+cutils/properties.h
+-
+cutils/sched_policy.h
+-
+utils/ThreadDefs.h
+-
+errno.h
+-
+pthread.h
+-
+sys/resource.h
+-
+stdio.h
+-
+stdlib.h
+-
+unistd.h
+-
+utils/Log.h
+-
+data_types.h
+/home/nikhil/Documents/bluedroid.for.linux/utils/src/data_types.h
+bt_utils.h
+/home/nikhil/Documents/bluedroid.for.linux/utils/src/bt_utils.h
+
+gki/ulinux/data_types.h
+
+utils/include/bt_utils.h
+
+utils/include/utils/Log.h
+

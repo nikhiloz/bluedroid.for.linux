@@ -1,0 +1,1 @@
+/usr/bin/cc -fPIC -g  -shared -Wl,-soname,libbt-vendor.so -o libbt-vendor.so CMakeFiles/libbt-vendor.dir/src/bt_vendor_rtk.c.o CMakeFiles/libbt-vendor.dir/src/hardware.c.o CMakeFiles/libbt-vendor.dir/src/userial_vendor.c.o CMakeFiles/libbt-vendor.dir/src/upio.c.o 

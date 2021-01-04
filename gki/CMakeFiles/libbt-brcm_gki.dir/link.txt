@@ -1,0 +1,2 @@
+/usr/bin/ar qc libbt-brcm_gki.a  CMakeFiles/libbt-brcm_gki.dir/ulinux/gki_ulinux.c.o CMakeFiles/libbt-brcm_gki.dir/common/gki_debug.c.o CMakeFiles/libbt-brcm_gki.dir/common/gki_time.c.o CMakeFiles/libbt-brcm_gki.dir/common/gki_buffer.c.o
+/usr/bin/ranlib libbt-brcm_gki.a
