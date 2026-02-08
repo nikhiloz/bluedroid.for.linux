@@ -1,6 +1,6 @@
 # API Reference
 
-Complete API documentation for bluedroid.for.linux development.
+Complete API documentation for BlueLinux development.
 
 ## Core Initialization
 

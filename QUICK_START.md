@@ -1,6 +1,6 @@
 # Quick Start Guide
 
-Get bluedroid.for.linux running in minutes!
+Get BlueLinux running in minutes!
 
 ## Prerequisites
 
@@ -19,7 +19,7 @@ brew install cmake
 
 ### Option 1: CMake (Recommended)
 ```bash
-cd bluedroid.for.linux
+cd BlueLinux
 mkdir build && cd build
 cmake ..
 make -j$(nproc)
@@ -27,7 +27,7 @@ make -j$(nproc)
 
 ### Option 2: GNU Make
 ```bash
-cd bluedroid.for.linux
+cd BlueLinux
 make -j$(nproc)
 ```
 

@@ -1,10 +1,10 @@
 # Roadmap
 
-Future direction and planned improvements for bluedroid.for.linux.
+Future direction and planned improvements for BlueLinux.
 
 ## Vision
 
-Transform bluedroid.for.linux from a functional legacy codebase into a modern, well-maintained Bluetooth stack suitable for production use on contemporary Linux systems and embedded devices.
+Transform BlueLinux from a functional legacy codebase into a modern, well-maintained Bluetooth stack suitable for production use on contemporary Linux systems and embedded devices.
 
 ## Status Overview
 

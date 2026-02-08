@@ -38,8 +38,8 @@ brew install cmake valgrind lldb
 
 ```bash
 # Clone repository
-git clone https://github.com/nikhiloz/bluedroid.for.linux.git
-cd bluedroid.for.linux
+git clone https://github.com/nikhiloz/BlueLinux.git
+cd BlueLinux
 
 # Create development branch
 git checkout -b feature/my-feature
@@ -389,7 +389,7 @@ git commit -m "asdf"
 
 ```bash
 # Add upstream
-git remote add upstream https://github.com/nikhiloz/bluedroid.for.linux.git
+git remote add upstream https://github.com/nikhiloz/BlueLinux.git
 
 # Fetch latest
 git fetch upstream

@@ -1,4 +1,4 @@
-# Multi-stage Docker build for bluedroid.for.linux
+# Multi-stage Docker build for BlueLinux
 
 # Stage 1: Builder
 FROM ubuntu:22.04 AS builder

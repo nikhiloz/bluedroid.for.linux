@@ -1,4 +1,4 @@
-# Contributing to bluedroid.for.linux
+# Contributing to BlueLinux
 
 Thank you for your interest in contributing! This document provides guidelines and instructions.
 
@@ -7,7 +7,7 @@ Thank you for your interest in contributing! This document provides guidelines a
 - Be respectful and constructive
 - Welcome all levels of experience
 - No harassment, discrimination, or hostile behavior
-- Report issues to: [Create GitHub issue](https://github.com/nikhiloz/bluedroid.for.linux/issues)
+- Report issues to: [Create GitHub issue](https://github.com/nikhiloz/BlueLinux/issues)
 
 ## How to Contribute
 
@@ -30,8 +30,8 @@ Thank you for your interest in contributing! This document provides guidelines a
 
 ```bash
 # Clone and prep
-git clone https://github.com/nikhiloz/bluedroid.for.linux.git
-cd bluedroid.for.linux
+git clone https://github.com/nikhiloz/BlueLinux.git
+cd BlueLinux
 git checkout -b feature/your-feature-name
 
 # Build
@@ -158,7 +158,7 @@ git push origin docs/fix-typo
 ## Project Structure
 
 ```
-bluedroid.for.linux/
+BlueLinux/
 ├── stack/           # Core Bluetooth stack (careful here - deep logic)
 ├── bta/             # Profiles (good for targeted features)
 ├── hci/             # HCI layer (needs modernization)
@@ -200,6 +200,6 @@ All contributions must be compatible with this license.
 
 ---
 
-**Thank you for making bluedroid.for.linux better! 🚀**
+**Thank you for making BlueLinux better! 🚀**
 
 See [README.md](README.md) for more project information.

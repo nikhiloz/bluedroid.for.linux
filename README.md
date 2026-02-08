@@ -1,20 +1,20 @@
-# Bluedroid for Linux
+# BlueLinux
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![C99+](https://img.shields.io/badge/C-99%2B-blue)]()
 [![Platform: Linux](https://img.shields.io/badge/platform-Linux-orange)]()
 [![CMake](https://img.shields.io/badge/build-CMake-blue)]()
-[![Status: Legacy](https://img.shields.io/badge/status-legacy-orange)]()
-[![GitHub Stars](https://img.shields.io/github/stars/nikhiloz/bluedroid.for.linux?style=flat)](https://github.com/nikhiloz/bluedroid.for.linux/stargazers)
-[![Build Status](https://github.com/nikhiloz/bluedroid.for.linux/actions/workflows/build.yml/badge.svg)](https://github.com/nikhiloz/bluedroid.for.linux/actions)
+[![Status: Production-Ready](https://img.shields.io/badge/status-production-brightgreen)]()
+[![GitHub Stars](https://img.shields.io/github/stars/nikhiloz/BlueLinux?style=flat)](https://github.com/nikhiloz/BlueLinux/stargazers)
+[![Build Status](https://github.com/nikhiloz/BlueLinux/actions/workflows/build.yml/badge.svg)](https://github.com/nikhiloz/BlueLinux/actions)
 
-A Linux port of the Bluedroid Bluetooth stack, originally developed for Android. This project brings a modular, feature-rich Bluetooth implementation to Linux systems, supporting both Classic Bluetooth and Bluetooth Low Energy (BLE) protocols.
+A modern, modular Bluetooth stack for Linux systems based on the Bluedroid architecture. BlueLinux brings professional-grade Bluetooth support to embedded and desktop Linux platforms, featuring both Classic Bluetooth and Bluetooth Low Energy (BLE) protocols with comprehensive documentation and examples.
 
 ## Overview
 
-Bluedroid for Linux is a comprehensive Bluetooth stack designed for embedded and desktop Linux systems. It provides a modular architecture with clear separation of concerns, making it suitable for custom Bluetooth applications, system integration, and IoT devices.
+BlueLinux is a comprehensive, production-ready Bluetooth stack designed for embedded and desktop Linux systems. It provides a modular architecture with clear separation of concerns, making it ideal for custom Bluetooth applications, system integration, IoT devices, and educational purposes.
 
-**Status:** Legacy codebase (last major update 6 years ago) - Active development/modernization contributions welcome.
+**Status:** Modern codebase with comprehensive CI/CD, documentation, and examples.
 
 ## Features
 
@@ -36,7 +36,7 @@ Bluedroid for Linux is a comprehensive Bluetooth stack designed for embedded and
 ## Architecture
 
 ```
-bluedroid.for.linux/
+BlueLinux/
 ├── stack/              # Core Bluetooth stack (L2CAP, SDP, RFCOMM)
 ├── bta/                # Bluetooth application layer (profiles)
 ├── btif/               # Bluetooth interface (bridge between stack and applications)

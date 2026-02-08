@@ -49,7 +49,7 @@ cmake --version    # Should be 3.16+
 ### Build Steps
 
 ```bash
-cd bluedroid.for.linux
+cd BlueLinux
 mkdir build && cd build
 
 # Default build
@@ -94,7 +94,7 @@ cmake --version
 ### Build Steps
 
 ```bash
-cd bluedroid.for.linux
+cd BlueLinux
 mkdir build && cd build
 cmake ..
 make -j$(nproc)
@@ -120,7 +120,7 @@ brew install alsa-lib
 ### Build Steps
 
 ```bash
-cd bluedroid.for.linux
+cd BlueLinux
 mkdir build && cd build
 cmake .. -DCMAKE_OSX_DEPLOYMENT_TARGET=10.15
 make -j$(nproc)
@@ -149,8 +149,8 @@ sudo apt-get install -y \
 ### Build Steps
 
 ```bash
-git clone https://github.com/nikhiloz/bluedroid.for.linux.git
-cd bluedroid.for.linux
+git clone https://github.com/nikhiloz/BlueLinux.git
+cd BlueLinux
 mkdir build && cd build
 
 # Pi optimization (ARMv7/ARMv8)
@@ -200,8 +200,8 @@ pkg install alsa-lib
 ### Build Steps
 
 ```bash
-git clone https://github.com/nikhiloz/bluedroid.for.linux.git
-cd bluedroid.for.linux
+git clone https://github.com/nikhiloz/BlueLinux.git
+cd BlueLinux
 mkdir build && cd build
 
 cmake -DCMAKE_C_COMPILER=clang ..
@@ -399,7 +399,7 @@ sudo apt-get install libasound2-dev
 
 ```bash
 # Fix file permissions
-chmod +x bluedroid.for.linux/
+chmod +x BlueLinux/
 cd build
 
 # Rebuild

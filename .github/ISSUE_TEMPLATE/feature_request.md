@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 ## Feature Description
-**What should be added to bluedroid.for.linux?**
+**What should be added to BlueLinux?**
 <!-- Clear, concise description of the feature -->
 
 ## Problem It Solves

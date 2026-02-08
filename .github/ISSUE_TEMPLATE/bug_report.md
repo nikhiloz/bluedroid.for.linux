@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a bug or issue with bluedroid.for.linux
+about: Report a bug or issue with BlueLinux
 title: "[BUG] "
 labels: 'bug'
 assignees: ''
