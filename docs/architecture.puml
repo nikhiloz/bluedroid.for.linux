@@ -1,0 +1,89 @@
+@startuml bluedroid_architecture
+!define AWSPUML https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v14.0/dist
+skinparam componentStyle uml2
+skinparam backgroundColor #FEFEFE
+
+title Bluedroid for Linux - 5-Layer Architecture
+
+package "Application Layer" #FFE4E1 {
+    component [User Applications]
+    component [Demo Apps\n(discovery, A2DP, HID)]
+}
+
+package "Profile Layer (bta/)" #FFD700 {
+    component [A2DP/AVRCP\n(Audio)]
+    component [HFP\n(Hands-Free)]
+    component [HID\n(Input)]
+    component [GATT\n(BLE)]
+    component [SPP\n(Serial)]
+    component [GAP\n(Discovery)]
+}
+
+package "Application Interface (btif/)" #87CEEB {
+    component [BTIF Core]
+    component [Thread Manager]
+    component [Callback Handler]
+    component [Device Manager]
+}
+
+package "Core Stack (stack/)" #90EE90 {
+    component [L2CAP]
+    component [SDP]
+    component [RFCOMM]
+    component [ATT/GATT]
+    component [SM (Security)]
+    component [HCI Processing]
+}
+
+package "Hardware Abstraction (hci/, udrv/, gki/)" #DDA0DD {
+    component [HCI Layer]
+    component [UART/USB Driver]
+    component [GKI Threads]
+    component [Memory Manager]
+}
+
+[User Applications] --> [A2DP/AVRCP\n(Audio)]
+[User Applications] --> [HFP\n(Hands-Free)]
+[User Applications] --> [HID\n(Input)]
+[User Applications] --> [GATT\n(BLE)]
+[User Applications] --> [SPP\n(Serial)]
+[User Applications] --> [GAP\n(Discovery)]
+
+[A2DP/AVRCP\n(Audio)] --> [BTIF Core]
+[HFP\n(Hands-Free)] --> [BTIF Core]
+[HID\n(Input)] --> [BTIF Core]
+[GATT\n(BLE)] --> [BTIF Core]
+[SPP\n(Serial)] --> [BTIF Core]
+[GAP\n(Discovery)] --> [BTIF Core]
+
+[BTIF Core] --> [Thread Manager]
+[BTIF Core] --> [Callback Handler]
+[BTIF Core] --> [Device Manager]
+
+[Thread Manager] --> [L2CAP]
+[Callback Handler] --> [L2CAP]
+[Device Manager] --> [L2CAP]
+
+[L2CAP] --> [SDP]
+[L2CAP] --> [RFCOMM]
+[L2CAP] --> [ATT/GATT]
+[L2CAP] --> [SM (Security)]
+
+[SDP] --> [HCI Processing]
+[RFCOMM] --> [HCI Processing]
+[ATT/GATT] --> [HCI Processing]
+[SM (Security)] --> [HCI Processing]
+
+[HCI Processing] --> [HCI Layer]
+[HCI Layer] --> [UART/USB Driver]
+[HCI Layer] --> [GKI Threads]
+[HCI Layer] --> [Memory Manager]
+
+[HCI Layer] -.-> [Bluetooth Controller]
+
+note right of [Bluetooth Controller]
+    Physical Bluetooth Hardware
+    (Chipset, antenna, etc.)
+end note
+
+@enduml

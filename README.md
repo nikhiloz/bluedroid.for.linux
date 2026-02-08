@@ -76,7 +76,203 @@ bluedroid.for.linux/
    - `audio_a2dp_hw/` - A2DP audio sink/source implementation
    - `embdrv/sbc/encoder` - SBC codec for audio compression
 
+## System Architecture Diagrams
+
+### 5-Layer Architecture Overview
+
+This visual representation shows how the system is organized into distinct, independent layers:
+
+![Bluedroid 5-Layer Architecture](docs/bluedroid_architecture.png)
+
+**Layer Explanation:**
+1. **Application** - User code using the Bluetooth stack
+2. **Profile** (bta/) - Bluetooth protocol implementations (A2DP, HFP, HID, GATT)
+3. **Interface** (btif/) - Bridge connecting profiles to stack
+4. **Core Stack** (stack/) - Protocol processing (L2CAP, SDP, RFCOMM, ATT)
+5. **Hardware** (hci/, udrv/, gki/) - Device communication and OS abstraction
+
+### Module Dependencies
+
+All modules and their relationships:
+
+![Module Dependencies](docs/module_dependencies.png)
+
+### A2DP Audio Streaming Data Flow
+
+Example of how audio data flows through the system:
+
+![A2DP Data Flow](docs/a2dp_dataflow.png)
+
+## Quick Integration Examples
+
+### Example 1: Device Discovery
+
+```c
+#include <btif/btif_api.h>
+
+// Callback for discovered devices
+void on_discovery_complete(int num_devices, bt_device_t *devices) {
+    for (int i = 0; i < num_devices; i++) {
+        printf("Found: %s [%02x:%02x:%02x:%02x:%02x:%02x] RSSI: %d\n",
+               devices[i].name,
+               devices[i].address.address[0],
+               devices[i].address.address[1],
+               devices[i].address.address[2],
+               devices[i].address.address[3],
+               devices[i].address.address[4],
+               devices[i].address.address[5],
+               devices[i].rssi);
+    }
+}
+
+int main() {
+    btif_init();
+    btif_enable();
+    
+    // Register callback
+    btif_dm_register_discovery_callback(on_discovery_complete);
+    
+    // Start 12-second discovery scan
+    start_discovery();
+    sleep(12);
+    cancel_discovery();
+    
+    btif_disable();
+    return 0;
+}
+```
+
+**Compilation:**
+```bash
+gcc -I./include discovery_example.c -o discovery \
+    -L./build/lib -lbluedroid -lpthread
+./discovery
+```
+
+### Example 2: A2DP Audio Connection & Playback
+
+```c
+#include <btif/btif_api.h>
+#include <stdio.h>
+#include <unistd.h>
+
+void on_av_connection_state(bt_connection_state_t state, bt_bdaddr_t *addr) {
+    printf("Audio device connection: %s\n", 
+           state == BT_ACL_STATE_CONNECTED ? "Connected" : "Disconnected");
+}
+
+int main() {
+    bt_bdaddr_t remote = {
+        .address = {0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF}
+    };
+    
+    btif_init();
+    btif_enable();
+    
+    // Register connection callback
+    btif_dm_register_connection_callback(on_av_connection_state);
+    
+    // Open A2DP connection
+    printf("Connecting to audio device...\n");
+    btif_av_open(&remote);
+    sleep(2);  // Wait for connection
+    
+    // Start audio playback
+    printf("Starting playback...\n");
+    btif_av_play();
+    sleep(10);  // Stream for 10 seconds
+    
+    // Pause
+    printf("Pausing...\n");
+    btif_av_pause();
+    sleep(2);
+    
+    // Resume
+    printf("Resuming...\n");
+    btif_av_play();
+    sleep(5);
+    
+    // Disconnect
+    printf("Stopping...\n");
+    btif_av_close();
+    
+    btif_disable();
+    return 0;
+}
+```
+
+### Example 3: HID Device (Keyboard/Mouse)
+
+```c
+#include <btif/btif_api.h>
+
+void on_hid_input_report(bt_bdaddr_t *addr, const uint8_t *data, int length) {
+    printf("HID Report: ");
+    for (int i = 0; i < length; i++) {
+        printf("%02x ", data[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+    bt_bdaddr_t keyboard_addr = {
+        .address = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66}
+    };
+    
+    btif_init();
+    btif_enable();
+    
+    // Connect to HID device
+    printf("Connecting to keyboard...\n");
+    btif_hh_connect(&keyboard_addr);
+    sleep(2);
+    
+    // Listen for input for 30 seconds
+    printf("Listening for keyboard input...\n");
+    sleep(30);
+    
+    // Disconnect
+    btif_hh_disconnect(&keyboard_addr);
+    btif_disable();
+    return 0;
+}
+```
+
+### Example 4: GATT BLE Server/Client
+
+```c
+#include <btif/btif_api.h>
+
+void on_gatt_server_connect(bt_bdaddr_t *addr) {
+    printf("GATT Client connected: %02x:%02x:%02x:%02x:%02x:%02x\n",
+           addr->address[0], addr->address[1], addr->address[2],
+           addr->address[3], addr->address[4], addr->address[5]);
+}
+
+int main() {
+    btif_init();
+    btif_enable();
+    
+    // Start BLE advertising
+    printf("Starting BLE advertisement...\n");
+    btif_gatts_start_service_advertise();
+    
+    // Register GATT server callbacks
+    btif_gatts_register_server_callback(on_gatt_server_connect);
+    
+    // Wait for connections
+    printf("Waiting for BLE client connections...\n");
+    sleep(60);
+    
+    // Stop advertising
+    btif_gatts_stop_service_advertise();
+    btif_disable();
+    return 0;
+}
+```
+
 ## Building
+
 
 ### Prerequisites
 
@@ -210,37 +406,59 @@ BtSnoopFileName=/var/log/bluetooth/btsnoop.log
 - [ ] Example applications and tutorials
 - [ ] API documentation (Doxygen)
 
-## Usage Examples
+## Usage Examples & Runnable Demos
 
-### Example 1: Simple Device Discovery
+This repository includes fully functional example applications in the `examples/` directory that demonstrate key features:
 
-```c
-#include <stdio.h>
-#include "btif/btif.h"
+### Available Examples
 
-int main() {
-    // Initialize Bluetooth
-    btif_init();
-    btif_enable();
-    
-    // Start discovery
-    start_discovery();
-    sleep(12); // Scan for 12 seconds
-    cancel_discovery();
-    
-    // Process discovered devices
-    // (See btif_dm.c for callbacks)
-    
-    btif_disable();
-    return 0;
-}
-```
+1. **[device_discovery.c](examples/device_discovery.c)**
+   - Device scanning and enumeration
+   - Discover nearby Bluetooth devices
+   - Display device information (address, name, RSSI, class of device)
+   ```bash
+   cd examples
+   gcc -I../include device_discovery.c -o discovery_demo
+   ./discovery_demo
+   ```
 
-### Example 2: Profile Registration (A2DP)
+2. **[a2dp_audio.c](examples/a2dp_audio.c)**
+   - Audio device connection
+   - A2DP stream management (play/pause/stop)
+   - Audio codec negotiation (SBC)
+   - Connection state tracking
+   ```bash
+   gcc -I../include a2dp_audio.c -o a2dp_demo
+   ./a2dp_demo
+   ```
 
-See `bta/av/` directory for profile state machine examples and callback registration.
+3. **[hid_device.c](examples/hid_device.c)**
+   - HID device connections (keyboard, mouse, joystick)
+   - Input report handling
+   - Device capability detection
+   - Battery level monitoring
+   ```bash
+   gcc -I../include hid_device.c -o hid_demo
+   ./hid_demo
+   ```
+
+### Integration in Your Application
+
+Detailed integration examples are provided above in the "[Quick Integration Examples](#quick-integration-examples)" section, including:
+- Device discovery and pairing
+- A2DP audio streaming
+- HID device control
+- GATT BLE server/client
+
+### Advanced Configurations
+
+For more complex scenarios, see:
+- [DEVELOPMENT.md](docs/DEVELOPMENT.md) - Development setup and debugging
+- [API_REFERENCE.md](docs/API_REFERENCE.md) - Complete API documentation
+- [ARCHITECTURE.md](docs/ARCHITECTURE.md) - System design details
 
 ## Troubleshooting
+
 
 ### HCI Communication Issues
 - Verify Bluetooth hardware: `hciconfig -a`

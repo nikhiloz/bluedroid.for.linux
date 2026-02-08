@@ -1,0 +1,148 @@
+@startuml module_dependencies
+!define AWSPUML https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v14.0/dist
+skinparam backgroundColor #FEFEFE
+title Bluedroid Module Dependencies
+
+package "Application Code" #FFE4E1 {
+    component [user_app]
+}
+
+package "BTIF Layer" #87CEEB {
+    component [btif_core] as core
+    component [btif_av] as av_if
+    component [btif_hf] as hf_if
+    component [btif_hh] as hh_if
+    component [btif_gatt] as gatt_if
+    component [btif_dm] as dm_if
+}
+
+package "BTA Profiles" #FFD700 {
+    component [bta/av] as bta_av
+    component [bta/hf_client] as bta_hf
+    component [bta/hh] as bta_hh
+    component [bta/gatts] as bta_gatts
+    component [bta/gattc] as bta_gattc
+    component [bta/dm] as bta_dm
+}
+
+package "Stack Protocols" #90EE90 {
+    component [L2CAP] as l2cap
+    component [SDP] as sdp
+    component [RFCOMM] as rfcomm
+    component [ATT/GATT] as att
+    component [SM] as sm
+    component [HCI] as hci_stack
+}
+
+package "Hardware Layer" #DDA0DD {
+    component [HCI Rx] as hci_rx
+    component [HCI Tx] as hci_tx
+    component [UART] as uart
+    component [USB] as usb
+    component [GKI] as gki
+}
+
+package "kernel/Device" #CCCCCC {
+    component [/dev/ttyUSB0] as dev
+    component [Bluetooth HW] as hw
+}
+
+user_app --> av_if
+user_app --> hf_if
+user_app --> hh_if
+user_app --> gatt_if
+user_app --> dm_if
+
+av_if --> core
+hf_if --> core
+hh_if --> core
+gatt_if --> core
+dm_if --> core
+
+core --> bta_av
+core --> bta_hf
+core --> bta_hh
+core --> bta_gatts
+core --> bta_gattc
+core --> bta_dm
+
+bta_av --> l2cap
+bta_hf --> rfcomm
+bta_hh --> l2cap
+bta_gatts --> att
+bta_gattc --> att
+bta_dm --> sdp
+
+l2cap --> sm
+rfcomm --> l2cap
+att --> sm
+sm --> hci_stack
+
+hci_stack --> hci_rx
+hci_stack --> hci_tx
+
+hci_rx --> uart
+hci_tx --> uart
+
+uart --> dev
+
+hci_rx --> gki
+hci_tx --> gki
+
+l2cap --> gki
+rfcomm --> gki
+att --> gki
+sm --> gki
+
+dev --> hw
+
+note right of av_if
+    A2DP Audio
+    Distribution
+end note
+
+note right of hf_if
+    Hands-Free
+    Profile
+end note
+
+note right of hh_if
+    HID Host
+    (keyboard, mouse)
+end note
+
+note right of gatt_if
+    BLE Generic
+    Attribute
+end note
+
+note right of dm_if
+    Device Manager
+    (discovery, pairing)
+end note
+
+note bottom of l2cap
+    Logical Link Control
+    & Adaptation Protocol
+    (Data channels)
+end note
+
+note bottom of sdp
+    Service
+    Discovery
+    Protocol
+end note
+
+note bottom of att
+    Attribute
+    Protocol
+    (BLE only)
+end note
+
+note bottom of sm
+    Security
+    Manager
+    (encryption, pairing)
+end note
+
+@enduml

@@ -1,0 +1,102 @@
+@startuml a2dp_dataflow
+!define AWSPUML https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v14.0/dist
+skinparam backgroundColor #FEFEFE
+skinparam sequenceArrowThickness 2
+title A2DP Audio Streaming - Data Flow
+
+participant "User App" as app
+participant "BTIF (A2DP)" as btif
+participant "BTA (A2DP)" as bta
+participant "Stack" as stack
+participant "HCI Layer" as hci
+participant "UART/USB\nDriver" as driver
+participant "Bluetooth\nController" as controller
+participant "Remote\nDevice" as remote
+
+app -> btif: btif_av_open(bd_addr)
+activate btif
+btif -> bta: bta_av_handle_connect()
+activate bta
+bta -> stack: L2CA_CreateConnectionlessChannel()
+activate stack
+
+stack -> hci: Send HCI_Create_Connection
+activate hci
+hci -> driver: UART TX
+activate driver
+
+driver -> controller: HCI Packet
+activate controller
+controller -> remote: Bluetooth Packet
+activate remote
+
+remote --> controller: Connection Response
+deactivate remote
+
+controller --> driver: HCI Event
+deactivate controller
+driver --> hci: Serial RX
+deactivate driver
+
+hci --> stack: HCI_Connection_Complete
+deactivate hci
+
+stack --> bta: ACL Connection Setup
+deactivate stack
+
+bta --> btif: Connection Callback
+deactivate bta
+
+btif --> app: on_av_connection_state()
+deactivate btif
+
+note right of app
+    Device is now connected
+    Application can proceed to play
+end note
+
+par A2DP Audio Streaming
+    app -> btif: btif_av_play()
+    activate btif
+    btif -> bta: bta_av_do_disconnect_A2dp()
+    bta -> stack: Start AVDTP Stream
+    activate stack
+    
+    loop Every ~10ms (frames)
+        stack -> stack: Get audio data
+        stack -> stack: Encode with SBC
+        stack -> hci: Send Audio Packet
+        hci -> driver: UART TX
+        driver -> controller: HCI Data
+        controller -> remote: Bluetooth Audio
+    end
+    
+    stack -> bta: Streaming in progress
+    bta -> btif: State update
+    btif -> app: on_av_state_changed()
+    
+    note right of app
+        Audio streaming active
+        ~384 kbps for SBC codec
+    end note
+end
+
+app -> btif: btif_av_pause()
+btif -> bta: Stop AVDTP
+bta -> stack: Suspend Stream
+stack -> hci: HCI Suspend
+hci -> driver: UART
+driver -> controller: Command
+controller -> remote: Suspend
+
+remote --> controller: ACK
+controller --> driver: Response
+driver --> hci: Event
+hci --> stack: Stream Paused
+stack --> bta: State Update
+bta --> btif: Callback
+btif --> app: State = PAUSED
+
+deactivate btif
+
+@enduml
