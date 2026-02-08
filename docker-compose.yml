@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  bluedroid:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: bluedroid:latest
+    container_name: bluedroid-dev
+    
+    # Enable interactive terminal
+    stdin_open: true
+    tty: true
+    
+    # Mount source for development
+    volumes:
+      - .:/app
+      - /dev/ttyUSB0:/dev/ttyUSB0  # Bluetooth device
+      
+    # Required capabilities for Bluetooth
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+      
+    # Privileged mode (required for HCI access)
+    privileged: true
+    
+    # Environment
+    environment:
+      - BUILD_TYPE=Release
+      - VERBOSE=1
+      
+    # Network
+    network_mode: host  # Required for Bluetooth socket access
+    
+    # Resource limits (optional)
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1G
+
+  # Development environment with debug tools
+  bluedroid-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: bluedroid:dev
+    container_name: bluedroid-debug
+    
+    stdin_open: true
+    tty: true
+    
+    volumes:
+      - .:/app
+      - /dev/ttyUSB0:/dev/ttyUSB0
+      
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+      - SYS_PTRACE  # For gdb/valgrind
+      
+    privileged: true
+    
+    environment:
+      - BUILD_TYPE=Debug
+      - CMAKE_FLAGS=-DENABLE_ASAN=ON -DENABLE_UBSAN=ON
+      
+    network_mode: host
+    
+    # Additional debugging tools
+    # Install with: apt-get install gdb valgrind clang

@@ -1,11 +1,12 @@
 # Bluedroid for Linux
 
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![C99+](https://img.shields.io/badge/C-99%2B-blue)]()
 [![Platform: Linux](https://img.shields.io/badge/platform-Linux-orange)]()
 [![CMake](https://img.shields.io/badge/build-CMake-blue)]()
 [![Status: Legacy](https://img.shields.io/badge/status-legacy-orange)]()
 [![GitHub Stars](https://img.shields.io/github/stars/nikhiloz/bluedroid.for.linux?style=flat)](https://github.com/nikhiloz/bluedroid.for.linux/stargazers)
+[![Build Status](https://github.com/nikhiloz/bluedroid.for.linux/actions/workflows/build.yml/badge.svg)](https://github.com/nikhiloz/bluedroid.for.linux/actions)
 
 A Linux port of the Bluedroid Bluetooth stack, originally developed for Android. This project brings a modular, feature-rich Bluetooth implementation to Linux systems, supporting both Classic Bluetooth and Bluetooth Low Energy (BLE) protocols.
 

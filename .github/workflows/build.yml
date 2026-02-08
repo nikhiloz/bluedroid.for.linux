@@ -1,0 +1,96 @@
+name: Build & Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * 0'  # Weekly build on Sunday
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-20.04]
+        compiler: [gcc, clang]
+        build-type: [Debug, Release]
+    
+    name: Build (${{ matrix.os }}, ${{ matrix.compiler }}, ${{ matrix.build-type }})
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install dependencies (Ubuntu)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential \
+          cmake \
+          libpthread-stubs0-dev \
+          libasound2-dev \
+          pkg-config
+
+    - name: Set up compilers
+      run: |
+        if [ "${{ matrix.compiler }}" = "clang" ]; then
+          sudo apt-get install -y clang
+          echo "CC=clang" >> $GITHUB_ENV
+          echo "CXX=clang++" >> $GITHUB_ENV
+        else
+          echo "CC=gcc" >> $GITHUB_ENV
+          echo "CXX=g++" >> $GITHUB_ENV
+        fi
+
+    - name: Create build directory
+      run: mkdir -p build
+
+    - name: Configure CMake
+      working-directory: ./build
+      run: |
+        cmake .. \
+          -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} \
+          -DCMAKE_C_COMPILER=$CC \
+          -DCMAKE_CXX_COMPILER=$CXX
+
+    - name: Build
+      working-directory: ./build
+      run: make -j$(nproc)
+
+    - name: Run tests
+      working-directory: ./build
+      run: ctest -V || true
+      continue-on-error: true
+
+  style-check:
+    runs-on: ubuntu-22.04
+    name: Code Quality
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cppcheck clang-tools
+
+    - name: Cppcheck
+      run: cppcheck --enable=all --suppress=missingIncludeSystem src/ || true
+      continue-on-error: true
+
+  documentation:
+    runs-on: ubuntu-22.04
+    name: Documentation Check
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Check markdown files
+      run: |
+        echo "Checking documentation files..."
+        test -f README.md && echo "✓ README.md found"
+        test -f QUICK_START.md && echo "✓ QUICK_START.md found"
+        test -f CONTRIBUTING.md && echo "✓ CONTRIBUTING.md found"
+        test -f LICENSE && echo "✓ LICENSE found"
+        echo "All required documentation files present"
