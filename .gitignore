@@ -1,0 +1,68 @@
+# Build artifacts
+build/
+bin/
+*.o
+*.a
+*.so
+*.so.*
+*.dylib
+*.dll
+*.exe
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+Makefile
+install_manifest.txt
+*.cmake
+
+# Build output
+*.out
+*.app
+*.log
+
+# IDE and Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.cproject
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# Object and binary files
+*.obj
+*.elc
+*.old
+*.pyc
+*.pyo
+*.so.a
+
+# Generated documentation
+docs/_build/
+doxygen_output/
+html/
+latex/
+
+# Test outputs
+test_results/
+junit*.xml
+coverage/
+*.gcda
+*.gcno
+
+# Dependencies
+.deps/
+vendor/
+
+# Misc
+.env
+*.pid
+*.seed
+.tmp/
